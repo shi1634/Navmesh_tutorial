@@ -1,2 +1,16 @@
-# Navmesh_tutorial
-With this package you can build and use navmeshes at runtime and at edit time, create dynamic obstacles, and use links to allow specific actions (like jumping) as your characters navigate between navmeshes. demo project included.
+Shao Hi 
+Professor David Cardona 
+MTEC 340 
+December 3rd 2025
+The Logic of NavMesh
+The Logic of NavMeshThe Navmesh system is a great way when it comes to pathfinding or walkability implementation. Here are the tools and techniques that might be helpful when using it.
+First, I will introduce the logic of Navmesh. Think of it as a "baked GPS map." Just like a GPS knows the roads, NavMesh decides which objects are walkable and which are not. It handles things like walls, moving obstacles, or even rivers that you can't walk past. By using this system, AI agents can go through complex environments without hitting walls or falling off ledges. The system is made up of five distinct parts: the Map (NavMesh Surface), the Walker (Agent), the Tweaker (Modifier), the Blocker (Obstacle), and the Connector (NavMeshLink).
+The foundation is the NavMesh itself. It is a simplified mesh baked onto the level's surfaces. This baking process looks at the static objects in the scene—floors, walls, and ramps—and paints a "walkable" blue surface over them. If an area lacks this blue overlay, the AI perceives it as a void and will refuse to step there. This separation between the visual graphics and navigation data is crucial for performance.
+If you look at the Unity Editor, the NavMesh Surface component is what handles the baking. When we look at the surface, we see a wireframe cylinder. This is the agent type definition. If we click the agent type settings, we can see Radius (how fat the character is), Height (how tall the character is), Step Height (how high it can step up), and Max Slope (the steepest angle it can go up). By changing these settings and hitting bake, the map will show different results. For example, a fatter radius means bigger gaps between the walkable floor and the walls so the character doesn't clip into them.
+Once the map is baked, we need the NavMesh Agent. This is the "Walker" attached to the character object. It handles steering, acceleration, and speed. The important thing is that the Agent has to basically walk on top of the baked blue map. If it is placed outside the map boundaries, it won't work.
+For more control, we use the Modifier. This lets us change how specific objects are baked. For example, we can make a "Ghost Wall" by setting the modifier mode to "Remove Object," so the AI walks right through a solid wall. Or we can define "Area Costs"—like marking a flat plane as "Water" so it costs more to walk there, making the AI prefer dry land.
+Then there is the NavMesh Obstacle. It is mainly used for dynamic objects. While the NavMesh Surface is static (baked once), obstacles set to "Carve" can cut a hole in the blue map in real-time. This is essential for moving things like sliding doors or cars. When the obstacle moves, the hole moves with it, and the Agent has to calculate a new path on the fly.
+Finally, we have the NavMeshLink. This acts as the connector. In many levels, walkable surfaces are separated by gaps, like floating platforms. A NavMeshLink creates a bridge across this void, telling the AI it can jump or drop from one spot to another. Without this link, the AI just sees an impassable cliff.
+
+work cited
+https://docs.unity3d.com/ScriptReference/AI.NavMesh.html
